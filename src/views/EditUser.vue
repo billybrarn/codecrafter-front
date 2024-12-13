@@ -65,7 +65,7 @@ export default{
     async fetchUser(){
         try {
             
-            const response = await axios.get(`http://localhost:8000/api/users/${this.$route.params.id}`);
+            const response = await axios.get(`https://codecrafter-back-tcc5.onrender.com/api/users/${this.$route.params.id}`);
             this.user = response.data;
         } catch (error) {
             console.log('error fetching users');
@@ -75,7 +75,7 @@ export default{
     async updateUser(){
         this.loading = true;
         try {            
-            await axios.put(`http://localhost:8000/api/users/${this.$route.params.id}`, this.user);            
+            await axios.put(`https://codecrafter-back-tcc5.onrender.com/api/users/${this.$route.params.id}`, this.user);            
             this.$toast.success('User Updated successfully!!!');
             this.$router.push('/users');
         } catch (error) {

@@ -58,7 +58,7 @@ export default{
     async fetchUsers(){
         try {
             
-            const response = await axios.get('http://localhost:8000/api/users');
+            const response = await axios.get('https://codecrafter-back-tcc5.onrender.com/api/users');
             this.users = response.data;
         } catch (error) {
             console.log('error fetching users');
@@ -68,7 +68,7 @@ export default{
         if (confirm('Are you sure you want to delete this user?')){
             try {
 
-             await axios.delete(`http://localhost:8000/api/users/${id}`)
+             await axios.delete(`https://codecrafter-back-tcc5.onrender.com/api/users/${id}`)
              this.users = this.users.filter(user => user._id !== id)
              this.$toast.success('User Deleted successfully!!!');
 
