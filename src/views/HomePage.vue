@@ -25,6 +25,9 @@
             </div>
         </div>
     </nav>
+
+    <h1>welcome to home</h1>
+    <p>this is my home page</p>
 </template>
 
 <script>
