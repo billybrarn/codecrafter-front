@@ -1,18 +1,29 @@
 <template>
-       <nav class="bg-gray-800 text-white">
+         <nav class="bg-gray-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold">Code Crafters Users</h1>
+                <h1 class="text-2xl font-bold">Code Crafters Users</h1>
                 </div>
 
                 <div class="flex items-center space-x-4">
                     <router-link to="/" class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Home</router-link>
                     <router-link to="/users" class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Users</router-link>
+                <div v-if="!isAuthenticated">
+                    <router-link to="/login" class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</router-link>
+                    <router-link to="/register" class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Register</router-link>
+                </div>
+
+                <div v-else>
+                    <button @click="logout" class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">logout</button>
+                </div>
+                
                 </div>
             </div>
         </div>
     </nav>
+
+
 
     <div class="max-w-md mx-auto mt-4 bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-bold mb-4 text-center ">Edit user</h2>
@@ -61,11 +72,23 @@ export default{
             loading: false          
         }
    },
+   computed:{
+        //
+        isAuthenticated(){
+            return !!localStorage.getItem('token');
+        }
+    },
+
    methods:{
     async fetchUser(){
         try {
-            
-            const response = await axios.get(`https://codecrafter-back-tcc5.onrender.com/api/users/${this.$route.params.id}`);
+            const token = localStorage.getItem('token')
+            const response = await axios.get(`http://localhost:8000/api/users/${this.$route.params.id}`, {
+               //to get token
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            });
             this.user = response.data;
         } catch (error) {
             console.log('error fetching users');
@@ -74,8 +97,14 @@ export default{
 
     async updateUser(){
         this.loading = true;
-        try {            
-            await axios.put(`https://codecrafter-back-tcc5.onrender.com/api/users/${this.$route.params.id}`, this.user);            
+        try {   
+            const token = localStorage.getItem('token')         
+            await axios.put(`http://localhost:8000/api/users/${this.$route.params.id}`, this.user, {
+               //to get token
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            });;            
             this.$toast.success('User Updated successfully!!!');
             this.$router.push('/users');
         } catch (error) {
@@ -83,9 +112,15 @@ export default{
         }finally{
             this.loading = false;
         }
-    }
+    },
+    
+    logout(){
+            localStorage.removeItem('token')
+            this.$router.push('/login')
+      }
 
    },
+
    created(){
     this.fetchUser();
    }
