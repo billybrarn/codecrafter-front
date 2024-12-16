@@ -26,7 +26,7 @@
         </div>
     </nav>
 
-    <h1>welcome to home</h1>
+    <h1 class="ml-3, items-center, font-bold">welcome to home</h1>
     <p>this is my home page</p>
 </template>
 
